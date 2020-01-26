@@ -33,7 +33,7 @@ public class ParkingDAOImpl implements ParkingDAO {
 		setOfSlotsP3.add(new Slot(2, true));
 		setOfSlotsP3.add(new Slot(3, true));
 	}
-	
+	/*
 	public static Map<SlotType, Set<Slot>> carParkingSlots1 = new HashMap<>();
 	static {
 		carParkingSlots1.put(SlotType.Standard, setOfSlotsP1);
@@ -45,12 +45,15 @@ public class ParkingDAOImpl implements ParkingDAO {
 	static {
 		carParkingSlots2.put(SlotType.Standard, setOfSlotsP3);
 		carParkingSlots2.put(SlotType.Electric_20kw, setOfSlotsP1);
-	}
+	}*/
 	
 	public static List<Parking> parkings = new ArrayList<>();
     static {
-        parkings.add(new Parking(1, new String("P1"), new Policy(3.5f), carParkingSlots1));
-        parkings.add(new Parking(2, new String("P2"), new Policy(1.5f, 3), carParkingSlots2)); 
+    	Parking P1 = new Parking(1, new String("P1"), new Policy(3.5f));
+    	P1.initNbSlotsPerType(SlotType.Standard, 10);
+    	P1.initNbSlotsPerType(SlotType.Electric_20kw, 5);
+    	P1.initNbSlotsPerType(SlotType.Electric_50kw, 1);
+        parkings.add(P1);
     }	
 	
 	@Override

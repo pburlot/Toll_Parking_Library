@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.microservice.tollparking.dao.ParkingDAO;
 import com.microservice.tollparking.model.Parking;
+import com.microservice.tollparking.model.Slot;
+import com.microservice.tollparking.model.SlotType;
+import com.microservice.tollparking.processing.ParkingCreationRequest;
 
 
 @RestController
@@ -31,7 +34,14 @@ public class TollparkingController {
 	}
 	
     @PostMapping(value = "/Parkings")
-    public void AddParking(@RequestBody Parking parking) {
+    public void AddParking(@RequestBody ParkingCreationRequest parkingRequest) {
+    	Parking parking = new Parking(parkingRequest.getId(), parkingRequest.getName(), parkingRequest.getPolicy());
+    	for (int i = 0; i < parkingRequest.getNbCarParkingSlotsPerType().size(); i++) 
+    	{
+    		String typeSlot = parkingRequest.getNbCarParkingSlotsPerType().get(i).getSlotType();
+    		int nbSlot = parkingRequest.getNbCarParkingSlotsPerType().get(i).getNbSlot();
+        	parking.initNbSlotsPerType(SlotType.valueOf(typeSlot), nbSlot);
+        }
     	parkingDAO.save(parking);
     }
 }
