@@ -61,10 +61,20 @@ public class Parking {
 		this.carParkingSlots = carParkingSlots;
 	}
 	
-	public int getNumberOfSlotsPerType(SlotType type) {
+	public int getNumberOfSlotsAvailablePerType(SlotType type) {
 		Set <Slot> setOfSlots;
 		setOfSlots = this.carParkingSlots.get(type);
-		return setOfSlots.size();
+		int nbSlotAvail = 0;
+		Iterator<Slot> itr = setOfSlots.iterator();
+		while(itr.hasNext())
+		{
+			Slot slot = itr.next();
+			if (slot.isAvailable())
+			{
+				nbSlotAvail++;
+			}
+		}
+		return nbSlotAvail;
 	}
 	
 	public void initNbSlotsPerType(SlotType type, int nbOfSlot, int threshold) {
@@ -105,6 +115,15 @@ public class Parking {
 			}
 		}
 		return null;
+	}
+	
+	public boolean isSlotTypeExistingForParking(SlotType type) {
+		Set<SlotType> setOfSlotTypes = this.getCarParkingSlots().keySet();
+		if (setOfSlotTypes.contains(type))
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	/*

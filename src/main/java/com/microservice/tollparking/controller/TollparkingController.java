@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.microservice.tollparking.dao.ParkingDAO;
 import com.microservice.tollparking.exception.InvalidCarTypeException;
+import com.microservice.tollparking.exception.NoSlotAvailableForTypeException;
 import com.microservice.tollparking.exception.ParkingIDAlreadyExistingException;
 import com.microservice.tollparking.exception.ParkingNotExistingException;
 import com.microservice.tollparking.exception.ParkingsEmptyException;
 import com.microservice.tollparking.exception.SlotNotExistingException;
 import com.microservice.tollparking.exception.SlotNotInUseException;
+import com.microservice.tollparking.exception.SlotTypeNotExistingExcpetion;
 import com.microservice.tollparking.model.Parking;
 import com.microservice.tollparking.model.Slot;
 import com.microservice.tollparking.model.SlotType;
@@ -30,13 +32,17 @@ import com.microservice.tollparking.processing.ParkingCreationRequest;
 import com.microservice.tollparking.processing.ParkingResponse;
 import com.microservice.tollparking.processing.SlotResponse;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
+@Api( description="REST API for the management of a parking toll")
 @RestController
 public class TollparkingController {
 	
     @Autowired
     private ParkingDAO parkingDAO;
 	
+    @ApiOperation(value = "Display the list of parkings. For each parking, the parking id, the parking name, the parking policy and the number of slots per type of car is displayed")
 	@GetMapping(value="/Parkings")
     public List<ParkingResponse> listParkings() 
 	{
@@ -61,7 +67,7 @@ public class TollparkingController {
 			while(itr.hasNext())
 			{
 				SlotType slotType = itr.next();
-				int nbSlot = parkings.get(i).getNumberOfSlotsPerType(slotType);
+				int nbSlot = parkings.get(i).getNumberOfSlotsAvailablePerType(slotType);
 				SlotResponse slotResponse = new SlotResponse(slotType.toString(), nbSlot);
 				ListOfNbSlotPerType.add(slotResponse);
 				parkingResponse.setNbCarParkingSlotsPerType(ListOfNbSlotPerType);
@@ -71,6 +77,7 @@ public class TollparkingController {
 		return parkingsResponse;
     }
 	
+    @ApiOperation(value = "Display the detail of a parking. the parking id, the parking name, the parking policy and the details of each slots are displayed")
 	@GetMapping(value = "/Parkings/{id}")
 	public Parking displayParking(@PathVariable int id) 
 	{
@@ -82,6 +89,7 @@ public class TollparkingController {
 		return parking;
 	}
 	
+    @ApiOperation(value = "Create a parking")
     @PostMapping(value = "/AddParking")
     public void AddParking(@Valid @RequestBody ParkingCreationRequest parkingRequest) {
     	Parking parking = new Parking(parkingRequest.getId(), parkingRequest.getName(), parkingRequest.getPolicy());
@@ -105,6 +113,7 @@ public class TollparkingController {
     	parkingDAO.save(parking);
     }
     
+    @ApiOperation(value = "Park a car in a specific parking")
     @PostMapping(value = "/Parkings/{id}/ParkCar")
     public void ParkCar(@PathVariable int id, @RequestBody ParkCarCreationRequest parkCarRequest) {
     	Parking parking = parkingDAO.findById(id);
@@ -113,18 +122,28 @@ public class TollparkingController {
     		throw new ParkingNotExistingException("Parking: " + id + " does not exist");
     	}
     	String type = new String(parkCarRequest.getTypeOfCar());
-    	
+    	SlotType slotType;
     	try {
-    		SlotType slotType = SlotType.valueOf(type);
+    		slotType = SlotType.valueOf(type);
     	}
     	catch (IllegalArgumentException e) {
             throw new InvalidCarTypeException("Invalid car type: " + type);
          }
     	
+    	if(parking.isSlotTypeExistingForParking(slotType) == false)
+    	{
+    		throw new SlotTypeNotExistingExcpetion("Parking : " + id + " does not have any slots for " + type + " cars");
+    	}
+    	
+    	if(parking.getNumberOfSlotsAvailablePerType(slotType) == 0)
+    	{
+    		throw new NoSlotAvailableForTypeException("No available slot for: " + type + " cars");
+    	}
+    	
     	parking.parkCar(SlotType.valueOf(type));
-    	//parkingDAO.save(parking);
     }
     
+    @ApiOperation(value = "Bill a car leaving the parking")
 	@GetMapping(value = "/Parkings/{ParkingID}/LeaveParking/{SlotID}")
 	public BillingResponse LeaveParkingSlot(@PathVariable int ParkingID, @PathVariable int SlotID) 
 	{

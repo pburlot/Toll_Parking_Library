@@ -3,11 +3,11 @@ package com.microservice.tollparking.processing;
 public class SlotResponse {
 	
 	private String slotType;
-	private int nbSlot;
+	private int nbSlotAvailable;
 	
-	public SlotResponse(String slotType, int nbSlot) {
+	public SlotResponse(String slotType, int nbSlotAvailable) {
 		this.slotType = slotType;
-		this.nbSlot = nbSlot;
+		this.nbSlotAvailable = nbSlotAvailable;
 	}
 
 	public String getSlotType() {
@@ -18,16 +18,14 @@ public class SlotResponse {
 		this.slotType = slotType;
 	}
 
-	public int getNbSlot() {
-		return nbSlot;
+	public int getNbSlotAvailable() {
+		return nbSlotAvailable;
 	}
 
-	public void setNbSlot(int nbSlot) {
-		this.nbSlot = nbSlot;
+	public void setNbSlotAvailable(int nbSlotAvailable) {
+		this.nbSlotAvailable = nbSlotAvailable;
 	}
-	
-	
-	
-	
 
+	
+	
 }
