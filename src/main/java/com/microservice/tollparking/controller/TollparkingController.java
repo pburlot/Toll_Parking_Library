@@ -1,4 +1,5 @@
 package com.microservice.tollparking.controller;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import com.microservice.tollparking.dao.ParkingDAO;
 import com.microservice.tollparking.model.Parking;
 import com.microservice.tollparking.model.Slot;
 import com.microservice.tollparking.model.SlotType;
+import com.microservice.tollparking.processing.BillingResponse;
 import com.microservice.tollparking.processing.ParkCarCreationRequest;
 import com.microservice.tollparking.processing.ParkingCreationRequest;
 
@@ -57,10 +59,14 @@ public class TollparkingController {
     }
     
 	@GetMapping(value = "/Parkings/{ParkingID}/LeaveParking/{SlotID}")
-	public void LeaveParkingSlot(@PathVariable int ParkingID, @PathVariable int SlotID) 
+	public BillingResponse LeaveParkingSlot(@PathVariable int ParkingID, @PathVariable int SlotID) 
 	{
 		Parking parking = parkingDAO.findById(ParkingID);
 		Slot slot = parking.getSlotbyID(SlotID);
+		LocalDateTime now = LocalDateTime.now();
+		float bill = (float)parking.getPolicy().getBill(slot.getStartTimeOccupation(), now);
+		BillingResponse billResponse = new BillingResponse(slot.getStartTimeOccupation(), now, bill);
 		slot.freeSlot();
+		return billResponse;
 	}
 }

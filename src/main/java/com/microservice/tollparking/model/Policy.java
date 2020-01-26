@@ -27,9 +27,11 @@ public class Policy {
 	}
 
 	public float getBill(LocalDateTime enterTime, LocalDateTime leaveTime) {
+		float bill;
         Duration duration = Duration.between(enterTime, leaveTime);
         long hoursSpent = duration.toHours();
-		return hoursSpent * this.hourlyAmount + this.fixedAmount;
+		bill = (float)hoursSpent * (float)this.hourlyAmount + (float)this.fixedAmount;
+		return (float) bill;
 	}
 	
 }
