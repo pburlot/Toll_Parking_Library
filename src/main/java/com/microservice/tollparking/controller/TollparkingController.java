@@ -1,6 +1,9 @@
 package com.microservice.tollparking.controller;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +19,8 @@ import com.microservice.tollparking.model.SlotType;
 import com.microservice.tollparking.processing.BillingResponse;
 import com.microservice.tollparking.processing.ParkCarCreationRequest;
 import com.microservice.tollparking.processing.ParkingCreationRequest;
+import com.microservice.tollparking.processing.ParkingResponse;
+import com.microservice.tollparking.processing.SlotResponse;
 
 
 @RestController
@@ -25,9 +30,31 @@ public class TollparkingController {
     private ParkingDAO parkingDAO;
 	
 	@GetMapping(value="/Parkings")
-    public List<Parking> listParkings() 
+    public List<ParkingResponse> listParkings() 
 	{
-        return parkingDAO.findAll();
+		List<Parking> parkings = parkingDAO.findAll();
+		List<ParkingResponse> parkingsResponse = new ArrayList<ParkingResponse>(parkings.size());
+		
+		for(int i=0; i<parkings.size(); i++)
+		{
+			ParkingResponse parkingResponse = new ParkingResponse(parkings.get(i).getId(), parkings.get(i).getName(), parkings.get(i).getPolicy());
+			
+			int sizeList = parkings.get(i).getCarParkingSlots().keySet().size();
+			List<SlotResponse> ListOfNbSlotPerType = new ArrayList<SlotResponse>(sizeList);
+			
+			Set<SlotType> setSlotType = parkings.get(i).getCarParkingSlots().keySet();
+			Iterator<SlotType> itr = setSlotType.iterator();
+			while(itr.hasNext())
+			{
+				SlotType slotType = itr.next();
+				int nbSlot = parkings.get(i).getNumberOfSlotsPerType(slotType);
+				SlotResponse slotResponse = new SlotResponse(slotType.toString(), nbSlot);
+				ListOfNbSlotPerType.add(slotResponse);
+				parkingResponse.setNbCarParkingSlotsPerType(ListOfNbSlotPerType);
+			}	
+			parkingsResponse.add(parkingResponse);
+		}				
+		return parkingsResponse;
     }
 	
 	@GetMapping(value = "/Parkings/{id}")

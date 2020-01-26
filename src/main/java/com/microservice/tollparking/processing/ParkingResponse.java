@@ -11,11 +11,10 @@ public class ParkingResponse {
     private Policy policy;
     private List<SlotResponse> nbCarParkingSlotsPerType;
     
-	public ParkingResponse(int id, String name, Policy policy, List<SlotResponse> nbCarParkingSlotsPerType) {
+	public ParkingResponse(int id, String name, Policy policy) {
 		this.id = id;
 		this.name = name;
 		this.policy = policy;
-		this.nbCarParkingSlotsPerType = nbCarParkingSlotsPerType;
 	}
 
 	public int getId() {

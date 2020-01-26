@@ -2,7 +2,7 @@ package com.microservice.tollparking.model;
 
 public enum SlotType {
 	
-	  Standard ("standard parking slot for sedan cars"),
+	  Standard ("standard parking slot for sedan gasoline cars"),
 	  Electric_20kw ("parking slot for 20kw electric cars"),
 	  Electric_50kw ("parking slot for 50kw electric cars");
 
