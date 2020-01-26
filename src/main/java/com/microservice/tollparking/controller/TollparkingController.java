@@ -107,6 +107,10 @@ public class TollparkingController {
     @PostMapping(value = "/Parkings/{id}/ParkCar")
     public void ParkCar(@PathVariable int id, @RequestBody ParkCarCreationRequest parkCarRequest) {
     	Parking parking = parkingDAO.findById(id);
+    	if(parking == null)
+    	{
+    		throw new ParkingNotExistingException("Parking: " + id + " does not exist");
+    	}
     	String type = new String(parkCarRequest.getTypeOfCar());
     	parking.parkCar(SlotType.valueOf(type));
     	//parkingDAO.save(parking);
