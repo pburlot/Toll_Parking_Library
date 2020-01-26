@@ -38,4 +38,10 @@ public class Slot {
 		this.startTimeOccupation = startTimeOccupation;
 	}
 	
+	public void takeSlot() {
+		LocalDateTime currentDateTime = LocalDateTime.now();
+		this.startTimeOccupation = currentDateTime;
+		this.available = false;
+	}
+	
 }

@@ -1,8 +1,10 @@
 package com.microservice.tollparking.model;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -63,10 +65,26 @@ public class Parking {
 	
 	public void initNbSlotsPerType(SlotType type, int nbOfSlot) {
 		Set <Slot> setOfSlots = new HashSet<>(nbOfSlot);
-        for (int i = 1; i <= nbOfSlot; i++) {
+        for (int i = 0; i < nbOfSlot; i++) {
         	setOfSlots.add(new Slot(i));
         }
         this.carParkingSlots.put(type, setOfSlots);
+	}
+	
+	public boolean parkCar(SlotType type) {
+		Set <Slot> setOfSlots;
+		setOfSlots = this.carParkingSlots.get(type);
+		Iterator<Slot> itr = setOfSlots.iterator();
+		while(itr.hasNext())
+		{
+			Slot slot = itr.next();
+			if (slot.isAvailable())
+			{
+				slot.takeSlot();
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/*

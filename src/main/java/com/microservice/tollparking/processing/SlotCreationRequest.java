@@ -1,7 +1,5 @@
 package com.microservice.tollparking.processing;
 
-import com.microservice.tollparking.model.SlotType;
-
 public class SlotCreationRequest {
 	
 	private String slotType;

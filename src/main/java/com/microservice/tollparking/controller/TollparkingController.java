@@ -12,6 +12,7 @@ import com.microservice.tollparking.dao.ParkingDAO;
 import com.microservice.tollparking.model.Parking;
 import com.microservice.tollparking.model.Slot;
 import com.microservice.tollparking.model.SlotType;
+import com.microservice.tollparking.processing.ParkCarCreationRequest;
 import com.microservice.tollparking.processing.ParkingCreationRequest;
 
 
@@ -33,15 +34,23 @@ public class TollparkingController {
 		return parkingDAO.findById(id);
 	}
 	
-    @PostMapping(value = "/Parkings")
+    @PostMapping(value = "/AddParking")
     public void AddParking(@RequestBody ParkingCreationRequest parkingRequest) {
     	Parking parking = new Parking(parkingRequest.getId(), parkingRequest.getName(), parkingRequest.getPolicy());
     	for (int i = 0; i < parkingRequest.getNbCarParkingSlotsPerType().size(); i++) 
     	{
-    		String typeSlot = parkingRequest.getNbCarParkingSlotsPerType().get(i).getSlotType();
+    		String typeSlot = new String(parkingRequest.getNbCarParkingSlotsPerType().get(i).getSlotType());
     		int nbSlot = parkingRequest.getNbCarParkingSlotsPerType().get(i).getNbSlot();
         	parking.initNbSlotsPerType(SlotType.valueOf(typeSlot), nbSlot);
         }
     	parkingDAO.save(parking);
+    }
+    
+    @PostMapping(value = "/Parkings/{id}/ParkCar")
+    public void ParkCar(@PathVariable int id, @RequestBody ParkCarCreationRequest parkCarRequest) {
+    	Parking parking = parkingDAO.findById(id);
+    	String type = new String(parkCarRequest.getTypeOfCar());
+    	parking.parkCar(SlotType.valueOf(type));
+    	//parkingDAO.save(parking);
     }
 }
