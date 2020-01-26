@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.microservice.tollparking.dao.ParkingDAO;
+import com.microservice.tollparking.exception.InvalidCarTypeException;
 import com.microservice.tollparking.exception.ParkingIDAlreadyExistingException;
 import com.microservice.tollparking.exception.ParkingNotExistingException;
 import com.microservice.tollparking.exception.ParkingsEmptyException;
@@ -112,6 +113,14 @@ public class TollparkingController {
     		throw new ParkingNotExistingException("Parking: " + id + " does not exist");
     	}
     	String type = new String(parkCarRequest.getTypeOfCar());
+    	
+    	try {
+    		SlotType slotType = SlotType.valueOf(type);
+    	}
+    	catch (IllegalArgumentException e) {
+            throw new InvalidCarTypeException("Invalid car type: " + type);
+         }
+    	
     	parking.parkCar(SlotType.valueOf(type));
     	//parkingDAO.save(parking);
     }
