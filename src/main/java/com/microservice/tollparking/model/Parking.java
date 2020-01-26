@@ -1,18 +1,20 @@
 package com.microservice.tollparking.model;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
+
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import javax.print.attribute.SetOfIntegerSyntax;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 
 public class Parking {
 	
 	private int id;
+	
     private String name;
     private Policy policy;
     private Map<SlotType, Set<Slot>> carParkingSlots;

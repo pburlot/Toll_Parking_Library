@@ -3,9 +3,16 @@ package com.microservice.tollparking.model;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 public class Policy {
 	
+	@NotNull
+	@Min(value=0)
 	private final float hourlyAmount;
+	
+	@Min(value=0)
 	private final float fixedAmount;
 	
 	public Policy(float hourlyAmount) {

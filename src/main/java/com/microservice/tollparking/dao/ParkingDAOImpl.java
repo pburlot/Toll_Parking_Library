@@ -79,5 +79,15 @@ public class ParkingDAOImpl implements ParkingDAO {
 		parkings.add(parking);
 		return parking;
 	}
+	
+	@Override
+	public List<Integer> getListOfParkingID(){
+		List<Integer> listOfParkingID = new ArrayList<Integer>(parkings.size());
+		for(int i=0; i<parkings.size(); i++)
+		{
+			listOfParkingID.add(parkings.get(i).getId());
+		}
+		return listOfParkingID;
+	}
 
 }

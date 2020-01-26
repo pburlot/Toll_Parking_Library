@@ -1,0 +1,12 @@
+package com.microservice.tollparking.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class ParkingsEmptyException extends RuntimeException {
+
+    public ParkingsEmptyException(String s) {
+        super(s);
+    }
+}

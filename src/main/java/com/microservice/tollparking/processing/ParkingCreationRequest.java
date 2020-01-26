@@ -2,16 +2,24 @@ package com.microservice.tollparking.processing;
 
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.microservice.tollparking.model.Policy;
 
 public class ParkingCreationRequest {
 	
 	private int id;
+	
+	@Length(min=1, max=20)
 	private String name;
+	
+	@NotNull
     private Policy policy;
+	
+	@NotNull
     private List<SlotCreationRequest> nbCarParkingSlotsPerType;
-    
-
     
 	public ParkingCreationRequest(int id, String name, Policy policy,
 			List<SlotCreationRequest> nbCarParkingSlotsPerType) {

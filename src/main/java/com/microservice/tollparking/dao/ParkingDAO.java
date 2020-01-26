@@ -7,5 +7,6 @@ public interface ParkingDAO {
     public List<Parking> findAll();
     public Parking findById(int id);
     public Parking save(Parking parking);
+    public List<Integer> getListOfParkingID();
 
 }

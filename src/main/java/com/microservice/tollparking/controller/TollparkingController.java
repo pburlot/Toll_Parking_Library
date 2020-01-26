@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.microservice.tollparking.dao.ParkingDAO;
+import com.microservice.tollparking.exception.ParkingIDAlreadyExistingException;
+import com.microservice.tollparking.exception.ParkingNotExistingException;
+import com.microservice.tollparking.exception.ParkingsEmptyException;
+import com.microservice.tollparking.exception.SlotNotExistingException;
+import com.microservice.tollparking.exception.SlotNotInUseException;
 import com.microservice.tollparking.model.Parking;
 import com.microservice.tollparking.model.Slot;
 import com.microservice.tollparking.model.SlotType;
@@ -33,6 +40,12 @@ public class TollparkingController {
     public List<ParkingResponse> listParkings() 
 	{
 		List<Parking> parkings = parkingDAO.findAll();
+		
+		if(parkings.isEmpty()) 
+		{
+			throw new ParkingsEmptyException("No parkings created yet");
+		}
+		
 		List<ParkingResponse> parkingsResponse = new ArrayList<ParkingResponse>(parkings.size());
 		
 		for(int i=0; i<parkings.size(); i++)
@@ -60,12 +73,26 @@ public class TollparkingController {
 	@GetMapping(value = "/Parkings/{id}")
 	public Parking displayParking(@PathVariable int id) 
 	{
-		return parkingDAO.findById(id);
+		Parking parking = parkingDAO.findById(id);
+		if(parking == null) 
+		{
+			throw new ParkingNotExistingException("Parking: " + id + " does not exist");
+		}
+		return parking;
 	}
 	
     @PostMapping(value = "/AddParking")
-    public void AddParking(@RequestBody ParkingCreationRequest parkingRequest) {
+    public void AddParking(@Valid @RequestBody ParkingCreationRequest parkingRequest) {
     	Parking parking = new Parking(parkingRequest.getId(), parkingRequest.getName(), parkingRequest.getPolicy());
+		int id = parking.getId();
+    	for(int i=0; i< parkingDAO.getListOfParkingID().size(); i++)
+    	{
+    		if(id == parkingDAO.getListOfParkingID().get(i))
+    		{
+    			throw new ParkingIDAlreadyExistingException("Parking: " + id + " already exist");
+    		}
+    	}
+
     	int threshold = 0;
     	for (int i = 0; i < parkingRequest.getNbCarParkingSlotsPerType().size(); i++) 
     	{
@@ -89,7 +116,19 @@ public class TollparkingController {
 	public BillingResponse LeaveParkingSlot(@PathVariable int ParkingID, @PathVariable int SlotID) 
 	{
 		Parking parking = parkingDAO.findById(ParkingID);
+		if(parking == null) 
+		{
+			throw new ParkingNotExistingException("Parking: " + ParkingID + " does not exist");
+		}
 		Slot slot = parking.getSlotbyID(SlotID);
+		if(slot == null) 
+		{
+			throw new SlotNotExistingException("Slot: " + SlotID + " does not exist in the parking: " + ParkingID);
+		}
+		if(slot.isAvailable() == true) 
+		{
+			throw new SlotNotInUseException("Slot: " + SlotID + " is not used currently in the parking: " + ParkingID);
+		}
 		LocalDateTime now = LocalDateTime.now();
 		float bill = (float)parking.getPolicy().getBill(slot.getStartTimeOccupation(), now);
 		BillingResponse billResponse = new BillingResponse(slot.getStartTimeOccupation(), now, bill);
