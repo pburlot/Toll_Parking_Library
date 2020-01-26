@@ -3,4 +3,4 @@ Microservice managing parking tolls.
 
 # How to use
 # Build
-
+mvn clean install
