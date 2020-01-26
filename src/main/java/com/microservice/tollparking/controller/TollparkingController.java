@@ -37,11 +37,13 @@ public class TollparkingController {
     @PostMapping(value = "/AddParking")
     public void AddParking(@RequestBody ParkingCreationRequest parkingRequest) {
     	Parking parking = new Parking(parkingRequest.getId(), parkingRequest.getName(), parkingRequest.getPolicy());
+    	int threshold = 0;
     	for (int i = 0; i < parkingRequest.getNbCarParkingSlotsPerType().size(); i++) 
     	{
     		String typeSlot = new String(parkingRequest.getNbCarParkingSlotsPerType().get(i).getSlotType());
     		int nbSlot = parkingRequest.getNbCarParkingSlotsPerType().get(i).getNbSlot();
-        	parking.initNbSlotsPerType(SlotType.valueOf(typeSlot), nbSlot);
+        	parking.initNbSlotsPerType(SlotType.valueOf(typeSlot), nbSlot, threshold);
+        	threshold = threshold + nbSlot;
         }
     	parkingDAO.save(parking);
     }
@@ -53,4 +55,12 @@ public class TollparkingController {
     	parking.parkCar(SlotType.valueOf(type));
     	//parkingDAO.save(parking);
     }
+    
+	@GetMapping(value = "/Parkings/{ParkingID}/LeaveParking/{SlotID}")
+	public void LeaveParkingSlot(@PathVariable int ParkingID, @PathVariable int SlotID) 
+	{
+		Parking parking = parkingDAO.findById(ParkingID);
+		Slot slot = parking.getSlotbyID(SlotID);
+		slot.freeSlot();
+	}
 }

@@ -44,4 +44,9 @@ public class Slot {
 		this.available = false;
 	}
 	
+	public void freeSlot() {
+		this.startTimeOccupation = null;
+		this.available = true;
+	}
+	
 }

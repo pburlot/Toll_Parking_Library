@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import javax.print.attribute.SetOfIntegerSyntax;
+
 public class Parking {
 	
 	private int id;
@@ -63,10 +65,10 @@ public class Parking {
 		return setOfSlots.size();
 	}
 	
-	public void initNbSlotsPerType(SlotType type, int nbOfSlot) {
+	public void initNbSlotsPerType(SlotType type, int nbOfSlot, int threshold) {
 		Set <Slot> setOfSlots = new HashSet<>(nbOfSlot);
         for (int i = 0; i < nbOfSlot; i++) {
-        	setOfSlots.add(new Slot(i));
+        	setOfSlots.add(new Slot(i+threshold));
         }
         this.carParkingSlots.put(type, setOfSlots);
 	}
@@ -85,6 +87,22 @@ public class Parking {
 			}
 		}
 		return false;
+	}
+	
+	public Slot getSlotbyID(int slotID) {
+		for(Set<Slot> SetOfSlots : this.getCarParkingSlots().values())
+		{
+			Iterator<Slot> itr = SetOfSlots.iterator();
+			while(itr.hasNext())
+			{
+				Slot slot = itr.next();
+				if(slot.getSlotNumber() == slotID)
+				{
+					return slot;
+				}
+			}
+		}
+		return null;
 	}
 	
 	/*

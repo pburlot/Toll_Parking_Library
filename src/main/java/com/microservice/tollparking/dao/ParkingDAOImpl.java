@@ -48,13 +48,14 @@ public class ParkingDAOImpl implements ParkingDAO {
 	}*/
 	
 	public static List<Parking> parkings = new ArrayList<>();
+    /*
     static {
     	Parking P1 = new Parking(1, new String("P1"), new Policy(3.5f));
-    	P1.initNbSlotsPerType(SlotType.Standard, 10);
-    	P1.initNbSlotsPerType(SlotType.Electric_20kw, 5);
-    	P1.initNbSlotsPerType(SlotType.Electric_50kw, 1);
+    	P1.initNbSlotsPerType(SlotType.Standard, 10, 0);
+    	P1.initNbSlotsPerType(SlotType.Electric_20kw, 5, 10);
+    	P1.initNbSlotsPerType(SlotType.Electric_50kw, 1, 15);
         parkings.add(P1);
-    }	
+    }	*/
 	
 	@Override
 	public List<Parking> findAll() {
