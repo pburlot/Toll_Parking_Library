@@ -78,6 +78,7 @@ curl http://localhost:8080/Parkings
 
 ### /Parkings/{id} GET
 Display the detail of a parking. the parking id, the parking name, the parking policy and the details of each slots are displayed
+
 `id` is one of the id of a parking previously added
 
 ##### On a browser
@@ -86,4 +87,26 @@ Display the detail of a parking. the parking id, the parking name, the parking p
 ##### cURL
 ```
 curl http://localhost:8080/Parkings/0
+```
+
+
+### /Parkings/{id}/ParkCar POST
+Park a car in a specific parking
+
+##### Model
+```
+{
+  "typeOfCar": "string"
+}
+```
+  
+`typeOfCar` can be: `Standard` , `Electric_20kw` or `Electric_50kw`
+
+
+##### Using Swagger HTML UI
+[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) -> method /Parkings/{id}/ParkCar
+
+##### cURL
+```
+curl -X POST "http://localhost:8080/Parkings/0/ParkCar" -H  "accept: */*" -H  "Content-Type: application/json" -d "{  \"typeOfCar\": \"Standard\"}"
 ```
