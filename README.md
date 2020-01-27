@@ -93,6 +93,8 @@ curl http://localhost:8080/Parkings/0
 ### /Parkings/{id}/ParkCar POST
 Park a car in a specific parking
 
+`id` is one of the id of a parking previously added
+
 ##### Model
 ```
 {
@@ -109,4 +111,19 @@ Park a car in a specific parking
 ##### cURL
 ```
 curl -X POST "http://localhost:8080/Parkings/0/ParkCar" -H  "accept: */*" -H  "Content-Type: application/json" -d "{  \"typeOfCar\": \"Standard\"}"
+```
+
+
+### /Parkings/{ParkingID}/LeaveParking/{SlotID} GET
+Bill a car leaving the parking
+
+`ParkingID` is one of the id of a parking previously added
+`SlotID` is one of the slot id of the parking `ParkingID`
+
+##### On a browser
+[http://localhost:8080/Parkings/0/LeaveParking/0](http://localhost:8080/Parkings/0/LeaveParking/0)
+
+##### cURL
+```
+curl http://localhost:8080/Parkings/0/LeaveParking/0
 ```
