@@ -78,6 +78,7 @@ curl http://localhost:8080/Parkings
 
 ### /Parkings/{id} GET
 Display the detail of a parking. the parking id, the parking name, the parking policy and the details of each slots are displayed
+`id` is one of the id of a parking previously added
 
 ##### On a browser
 [http://localhost:8080/Parkings/0](http://localhost:8080/Parkings/0)
