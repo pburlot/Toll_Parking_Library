@@ -63,6 +63,7 @@ Create a parking
 curl -X POST "http://localhost:8080/AddParking" -H  "accept: */*" -H  "Content-Type: application/json" -d "{  \"id\": 0,  \"name\": \"Parking1\",  \"nbCarParkingSlotsPerType\": [    {      \"nbSlot\": 50,      \"slotType\": \"Standard\"    },    {      \"nbSlot\": 15,      \"slotType\": \"Electric_20kw\"    },    {      \"nbSlot\": 5,      \"slotType\": \"Electric_50kw\"    }  ],  \"policy\": {    \"fixedAmount\": 1.95,    \"hourlyAmount\": 2.5  }}"
 ```
 
+
 ### /Parkings GET
 Display the list of parkings. For each parking, the parking id, the parking name, the parking policy and the number of slots per type of car is displayed
 
@@ -71,6 +72,17 @@ Display the list of parkings. For each parking, the parking id, the parking name
 
 ##### cURL
 ```
-curl "http://localhost:8080/Parkings"
+curl http://localhost:8080/Parkings
 ```
 
+
+### /Parkings/{id} GET
+Display the detail of a parking. the parking id, the parking name, the parking policy and the details of each slots are displayed
+
+##### On a browser
+[http://localhost:8080/Parkings/0](http://localhost:8080/Parkings/0)
+
+##### cURL
+```
+curl http://localhost:8080/Parkings/0
+```
