@@ -28,13 +28,6 @@ public class Parking {
 		this.policy = policy;
 		this.carParkingSlots = new EnumMap<>(SlotType.class);
 	}
-    
-	/*public Parking(int id, String name, Policy policy, Map<SlotType, Set<Slot>> carParkingSlots) {
-		this.id = id;
-		this.name = name;
-		this.policy = policy;
-		this.carParkingSlots = carParkingSlots;
-	}*/
 
 	public int getId() {
 		return id;
@@ -51,7 +44,6 @@ public class Parking {
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 	public Map<SlotType, Set<Slot>> getCarParkingSlots() {
 		return carParkingSlots;
@@ -87,15 +79,18 @@ public class Parking {
 	
 	public boolean parkCar(SlotType type) {
 		Set <Slot> setOfSlots;
-		setOfSlots = this.carParkingSlots.get(type);
-		Iterator<Slot> itr = setOfSlots.iterator();
-		while(itr.hasNext())
+		if(this.isSlotTypeExistingForParking(type))
 		{
-			Slot slot = itr.next();
-			if (slot.isAvailable())
+			setOfSlots = this.carParkingSlots.get(type);
+			Iterator<Slot> itr = setOfSlots.iterator();
+			while(itr.hasNext())
 			{
-				slot.takeSlot();
-				return true;
+				Slot slot = itr.next();
+				if (slot.isAvailable())
+				{
+					slot.takeSlot();
+					return true;
+				}
 			}
 		}
 		return false;
@@ -125,11 +120,6 @@ public class Parking {
 		}
 		return false;
 	}
-	
-	/*
-	public void initNbSlotsForEachType(Map<SlotType, Integer> mapSlotsPerType) {
-        this.carParkingSlots = new Map<SlotType, Set<Slot>>
-	}*/
 
 	public Policy getPolicy() {
 		return policy;
