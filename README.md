@@ -130,6 +130,7 @@ curl http://localhost:8080/Parkings/0/LeaveParking/0
 
 
 # Next
+* Improve parking policy logic to be more dynamic
 * Improve unit testing of the code
 * Add unit testing for the controller
-* Add comment in the code
+* Add comments in the code
