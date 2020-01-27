@@ -36,7 +36,7 @@ Create a parking
 
 
 ###### Using Swagger HTML UI
-![AddParking](swagger_screenshots/AddParking.png)
+[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) -> method /AddParking
 
 ###### cURL
 ```
