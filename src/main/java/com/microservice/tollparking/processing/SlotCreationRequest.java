@@ -25,9 +25,4 @@ public class SlotCreationRequest {
 	public void setNbSlot(int nbSlot) {
 		this.nbSlot = nbSlot;
 	}
-	
-	
-	
-	
-
 }

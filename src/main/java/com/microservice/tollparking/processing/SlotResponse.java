@@ -25,7 +25,4 @@ public class SlotResponse {
 	public void setNbSlotAvailable(int nbSlotAvailable) {
 		this.nbSlotAvailable = nbSlotAvailable;
 	}
-
-	
-	
 }

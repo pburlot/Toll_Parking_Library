@@ -60,5 +60,4 @@ public class ParkingCreationRequest {
 	public void setNbCarParkingSlotsPerType(List<SlotCreationRequest> nbCarParkingSlotsPerType) {
 		this.nbCarParkingSlotsPerType = nbCarParkingSlotsPerType;
 	}  
-	
 }

@@ -19,5 +19,4 @@ public class ParkCarCreationRequest {
 	public void setTypeOfCar(String typeOfCar) {
 		this.typeOfCar = typeOfCar;
 	}
-
 }

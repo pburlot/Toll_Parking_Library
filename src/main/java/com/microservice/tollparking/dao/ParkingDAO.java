@@ -8,5 +8,4 @@ public interface ParkingDAO {
     public Parking findById(int id);
     public Parking save(Parking parking);
     public List<Integer> getListOfParkingID();
-
 }

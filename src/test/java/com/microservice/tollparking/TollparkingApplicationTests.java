@@ -21,5 +21,4 @@ class TollparkingApplicationTests {
     void contextLoads() {
         assertNotNull(tollParkingController);
     }
-
 }

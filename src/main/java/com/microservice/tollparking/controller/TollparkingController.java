@@ -44,7 +44,7 @@ public class TollparkingController {
 	
     @ApiOperation(value = "Display the list of parkings. For each parking, the parking id, the parking name, the parking policy and the number of slots per type of car is displayed")
 	@GetMapping(value="/Parkings")
-    public List<ParkingResponse> listParkings() 
+    public List<ParkingResponse> ListParkings() 
 	{
 		List<Parking> parkings = parkingDAO.findAll();
 		
@@ -79,7 +79,7 @@ public class TollparkingController {
 	
     @ApiOperation(value = "Display the detail of a parking. the parking id, the parking name, the parking policy and the details of each slots are displayed")
 	@GetMapping(value = "/Parkings/{id}")
-	public Parking displayParking(@PathVariable int id) 
+	public Parking DisplayParking(@PathVariable int id) 
 	{
 		Parking parking = parkingDAO.findById(id);
 		if(parking == null) 

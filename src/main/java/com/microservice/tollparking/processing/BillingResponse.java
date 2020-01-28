@@ -37,9 +37,4 @@ public class BillingResponse {
 	public void setBill(float bill) {
 		this.bill = bill;
 	}
-	
-	
-	
-	
-
 }

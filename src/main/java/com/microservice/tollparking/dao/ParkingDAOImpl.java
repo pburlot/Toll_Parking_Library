@@ -1,18 +1,12 @@
 package com.microservice.tollparking.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.springframework.stereotype.Repository;
 
 import com.microservice.tollparking.model.Parking;
-import com.microservice.tollparking.model.Policy;
-import com.microservice.tollparking.model.Slot;
-import com.microservice.tollparking.model.SlotType;
+
 
 @Repository
 public class ParkingDAOImpl implements ParkingDAO {
@@ -51,5 +45,4 @@ public class ParkingDAOImpl implements ParkingDAO {
 		}
 		return listOfParkingID;
 	}
-
 }

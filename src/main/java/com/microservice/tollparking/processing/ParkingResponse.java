@@ -48,6 +48,4 @@ public class ParkingResponse {
 	public void setNbCarParkingSlotsPerType(List<SlotResponse> nbCarParkingSlotsPerType) {
 		this.nbCarParkingSlotsPerType = nbCarParkingSlotsPerType;
 	}
-	
-	
 }
