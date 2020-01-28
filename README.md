@@ -132,5 +132,6 @@ curl http://localhost:8080/Parkings/0/LeaveParking/0
 # Next
 * Improve parking policy logic to be more dynamic
 * Improve unit testing of the code
-* Add unit testing for the controller
 * Add comments in the code
+* Use JPA to store parkingtoll content in a database
+* Use Lombok for methods generation
